@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  
+  mapInitialLatitude: 46.879966,
+  mapInitialLongitude: -121.726909,
+  mapInitialZoom: 7
 };
 
 /*
