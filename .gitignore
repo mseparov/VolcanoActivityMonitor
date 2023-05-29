@@ -1,0 +1,7 @@
+# Angular
+/angular/node_modules/
+/angular/dist/
+
+# Java
+/.mvn/
+/target/
