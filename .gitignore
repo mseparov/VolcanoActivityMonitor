@@ -1,7 +1,11 @@
 # Angular
-/angular/node_modules/
-/angular/dist/
+/volcano-gui/dist
+/volcano-gui/tmp
+/volcano-gui/out-tsc
+/volcano-gui/bazel-out
+/volcano-gui/node_modules
+/volcano-gui/.angular/cache
 
 # Java
-/.mvn/
-/target/
+/volcano-backend/.mvn/
+/volcano-backend/target/
