@@ -7,7 +7,9 @@ export const environment = {
   
   mapInitialLatitude: 46.879966,
   mapInitialLongitude: -121.726909,
-  mapInitialZoom: 7
+  mapInitialZoom: 7,
+
+  apiVolcanoData: "http://localhost:8080/volcanoes",
 };
 
 /*
