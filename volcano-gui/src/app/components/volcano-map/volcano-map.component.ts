@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { environment } from '@env/environment';
+import { mockVolcanoData } from '@env/mock-data';
 import { VolcanoService } from 'src/app/services/volcano.service';
 
 /**
@@ -14,6 +15,9 @@ import { VolcanoService } from 'src/app/services/volcano.service';
 export class VolcanoMapComponent implements OnInit {
 
   map!: L.Map;
+
+  // Mock data
+  volcanoes = mockVolcanoData;
 
   /**
    * Creates an instance of VolcanoMapComponent.
@@ -53,6 +57,7 @@ export class VolcanoMapComponent implements OnInit {
       },
       error: (error) => {
         console.log("Couldn't get volcano data...", error);
+        this.displayVolcanos(mockVolcanoData)
       }
     });
   }
@@ -62,13 +67,31 @@ export class VolcanoMapComponent implements OnInit {
    * @param data The volcano data to be displayed.
    */
   private displayVolcanos(data: any) {
-    data.records.forEach((record: any) => {
-      const coordinates = record.fields.coordinates;
-      const name = record.fields.name;
+    data.forEach((volcano: any) => {
+      const latitude = volcano.latitude;
+      const longitude = volcano.longitude;
+      const name = volcano.name;
   
-      const marker = L.marker([coordinates[0], coordinates[1]]).addTo(this.map);
+      const markerIcon = L.icon({
+        iconUrl: '../../assets/volcanoIcon.png', // Replace with the actual path to your marker icon
+        iconSize: [25, 25], // Adjust the size of the icon as per your requirements
+        iconAnchor: [12, 41], // Adjust the anchor point of the icon as per your requirements
+        popupAnchor: [1, -34] // Adjust the anchor point of the popup as per your requirements
+      });
+  
+      const marker = L.marker([latitude, longitude], { icon: markerIcon }).addTo(this.map);
       marker.bindPopup(name);
-    });
+    
+    
+    // Create the content for the popup
+    const popupContent = `
+    <app-volcano-popup [volcano]="volcano"></app-volcano-popup>
+  `;
+  
+    // Set the content of the popup
+    marker.bindPopup(popupContent, { minWidth: 300 }); // Adjust the minWidth as per your requirements
+  });
+
   }
 
 }

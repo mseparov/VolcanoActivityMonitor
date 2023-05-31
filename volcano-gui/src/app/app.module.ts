@@ -4,16 +4,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RegisterActivityComponent } from './components/register-activity/register-activity.component';
-import { ActivityLogComponent } from './components/activity-log/activity-log.component';
 import { VolcanoMapComponent } from './components/volcano-map/volcano-map.component';
+import { VolcanoPopupComponent } from './components/volcano-popup/volcano-popup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegisterActivityComponent,
-    ActivityLogComponent,
-    VolcanoMapComponent
+    VolcanoMapComponent,
+    VolcanoPopupComponent
   ],
   imports: [
     BrowserModule,
