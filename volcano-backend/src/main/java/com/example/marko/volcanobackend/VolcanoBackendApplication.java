@@ -9,5 +9,4 @@ public class VolcanoBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(VolcanoBackendApplication.class, args);
 	}
-
 }
