@@ -7,18 +7,78 @@ export const mockVolcanoData = [
       longitude: -12.345,
       elevation: 1000,
       type: 'Stratovolcano',
-      activity: [
+      activities: [
         {
             VEI: 5,
-            activityType: "Type 1",
-            activityStart: '2022-01-01',
-            activityEnd: '2022-02-02',
+            name: "Type 1",
+            start: '2022-01-01',
+            end: '2022-02-02',
         },
         {
             VEI: 7,
-            activityType: "Type 2",
-            activityStart: '2022-02-06',
-            activityEnd: '2022-07-02',
+            type: "Type 2",
+            start: '2022-02-06',
+            end: '2022-07-02',
+        },
+        {
+            VEI: 7,
+            type: "Type 2",
+            start: '2022-02-06',
+            end: '2022-07-02',
+        },
+        {
+            VEI: 7,
+            type: "Type 2",
+            start: '2022-02-06',
+            end: '2022-07-02',
+        },
+        {
+            VEI: 7,
+            type: "Type 2",
+            start: '2022-02-06',
+            end: '2022-07-02',
+        },
+        {
+            VEI: 7,
+            type: "Type 2",
+            start: '2022-02-06',
+            end: '2022-07-02',
+        },
+        {
+            VEI: 7,
+            type: "Type 2",
+            start: '2022-02-06',
+            end: '2022-07-02',
+        },
+        {
+            VEI: 7,
+            type: "Type 2",
+            start: '2022-02-06',
+            end: '2022-07-02',
+        },
+        {
+            VEI: 7,
+            type: "Type 2",
+            start: '2022-02-06',
+            end: '2022-07-02',
+        },
+        {
+            VEI: 7,
+            type: "Type 2",
+            start: '2022-02-06',
+            end: '2022-07-02',
+        },
+        {
+            VEI: 7,
+            type: "Type 2",
+            start: '2022-02-06',
+            end: '2022-07-02',
+        },
+        {
+            VEI: 7,
+            type: "Type 2",
+            start: '2022-02-06',
+            end: '2022-07-02',
         }
       ]
     },
@@ -30,18 +90,18 @@ export const mockVolcanoData = [
       longitude: -34.567,
       elevation: 2000,
       type: 'Shield volcano',
-      activity: [
+      activities: [
         {
             VEI: 5,
-            activityType: "Type 3",
-            activityStart: '2021-01-01',
-            activityEnd: '2021-04-02',
+            type: "Type 3",
+            start: '2021-01-01',
+            end: '2021-04-02',
         },
         {
             VEI: 7,
-            activityType: "Type 4",
-            activityStart: '2020-02-06',
-            activityEnd: '2021-07-02',
+            type: "Type 4",
+            start: '2020-02-06',
+            end: '2021-07-02',
         }
       ]
     }

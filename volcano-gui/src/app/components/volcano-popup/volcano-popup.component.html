@@ -1,16 +1,56 @@
-<div>
-    <h2>{{ volcano.name }}</h2>
-    <div>
-      <h3>General Info</h3>
-      <!-- Display general info here -->
+<div style="display: flex;">
+
+  <div>
+    
+    <div class="volcanoInfo">
+      <h2 style="background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">{{ volcano.name }}</h2>
+      <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Location: {{ volcano.location }}</p>
+      <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Type: {{ volcano.type }}</p>  
     </div>
-    <div>
+
+    <div style="width: 100%;">
       <h3>Add Volcano Activity</h3>
-      <!-- Add input fields and submit button for adding volcano activity -->
+      <form (submit)="addVolcanoActivity($event)">
+        <div class="form-group">
+          <label>Activity Name</label>
+          <input type="text" [(ngModel)]="newActivity.name" [ngModelOptions]="{ standalone: true }" required>
+        </div>
+        <div class="form-group">
+          <label>VEI</label>
+          <input type="number" [(ngModel)]="newActivity.vei" [ngModelOptions]="{ standalone: true }" required>
+        </div>
+        <div class="form-group">
+          <label>Activity Start</label>
+          <input type="date" [(ngModel)]="newActivity.start" [ngModelOptions]="{ standalone: true }" required>
+        </div>
+        <div class="form-group">
+          <label>Activity End</label>
+          <input type="date" [(ngModel)]="newActivity.end" [ngModelOptions]="{ standalone: true }" required>
+        </div>
+        <button class="submitButton" type="submit">Register Activity</button>
+      </form>
     </div>
+
+  </div>
+
+  <div style="margin-left: 55px; background-color: rgb(216, 229, 235); width: 60%; border-radius: 5px;">
     <div>
-      <h3>All Volcano Activities</h3>
-      <!-- Display all volcano activities -->
+      <h3 style="text-align: center;">All Volcano Activities</h3>
+      <div style="height: 440px; width: 100%; overflow-y: scroll; margin-left: 5px;">
+        <ul>
+          <li *ngFor="let activity of volcano.activities">
+            <b>Name: </b>{{ activity.name }}, 
+            <br>
+            <b>VEI: </b>{{ activity.VEI }},
+            <br>
+            <b>Start: </b>{{ activity.start }}, 
+            <br>
+            <b>End: </b>{{ activity.end }}
+          </li>
+        </ul>
+      </div>
     </div>
+   
+  </div>
+
 </div>
-  

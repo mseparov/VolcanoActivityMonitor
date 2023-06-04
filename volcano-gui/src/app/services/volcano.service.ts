@@ -14,4 +14,12 @@ export class VolcanoService {
   getVolcanoData(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }
+
+  addVolcanoActivity(activity: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/activities`, activity);
+  }
+
+  getVolcanoActivities(volcanoId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/activities/${volcanoId}`);
+  }
 }

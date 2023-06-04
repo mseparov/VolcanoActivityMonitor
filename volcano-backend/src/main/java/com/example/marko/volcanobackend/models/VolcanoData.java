@@ -64,4 +64,18 @@ public class VolcanoData {
     public void setActivityEnd(String activityEnd) {
         this.activityEnd = activityEnd;
     }
+
+    @Override
+    public String toString() {
+        return "VolcanoData{" +
+                "volcanoName='" + volcanoName + '\'' +
+                ", primaryVolcanoType='" + primaryVolcanoType + '\'' +
+                ", country='" + country + '\'' +
+                ", vei='" + vei + '\'' +
+                ", activityType='" + activityType + '\'' +
+                ", activityStart='" + activityStart + '\'' +
+                ", activityEnd='" + activityEnd + '\'' +
+                '}';
+    }
+
 }

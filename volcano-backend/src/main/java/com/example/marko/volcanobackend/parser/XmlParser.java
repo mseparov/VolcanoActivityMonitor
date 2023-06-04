@@ -43,6 +43,9 @@ public class XmlParser {
 
             // Add the VolcanoData object to the list
             volcanoDataList.add(volcanoData);
+
+            System.out.println(volcanoData.toString());
+
         }
 
         return volcanoDataList;

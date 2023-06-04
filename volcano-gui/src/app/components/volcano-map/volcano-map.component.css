@@ -1,3 +1,14 @@
 #map {
     height: 98vh;
 }
+
+/* volcano-map.component.css */
+::ng-deep .leaflet-popup-content-wrapper {
+    background-color: rgb(240, 245, 250);
+    font-family: "Poppins", sans-serif;
+}
+
+/* volcano-map.component.css */
+::ng-deep .leaflet-popup-tip {
+    background-color: rgb(240, 245, 250);
+}
