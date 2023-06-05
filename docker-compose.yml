@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USER: postgres
+      POSTGRES_DB: volcanoes
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build:
+      context: ./volcano-backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - postgresql.jdbcUrl=jdbc:postgresql://db:5432/volcanoes
+      - postgresql.username=postgres
+      - postgresql.password=mysecretpassword
+
+#  frontend:
+#    build:
+#      context: ./volcano-gui
+#      dockerfile: Dockerfile
+#    restart: always
+#    ports:
+#      - 80:80
+#    depends_on:
+#      - backend

@@ -1,81 +1,93 @@
 package com.example.marko.volcanobackend.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VolcanoData {
-    private String volcanoName;
-    private String primaryVolcanoType;
-    private String country;
-    private String vei;
-    private String activityType;
-    private String activityStart;
-    private String activityEnd;
+    private int number;
+    private String name;
+    private String location;
+    private double latitude;
+    private double longitude;
+    private int elevation;
+    private String type;
+    private List<VolcanoActivity> activities = new ArrayList<>();
 
-    public String getVolcanoName() {
-        return volcanoName;
+    public int getNumber() {
+        return number;
     }
 
-    public void setVolcanoName(String volcanoName) {
-        this.volcanoName = volcanoName;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
-    public String getPrimaryVolcanoType() {
-        return primaryVolcanoType;
+    public String getName() {
+        return name;
     }
 
-    public void setPrimaryVolcanoType(String primaryVolcanoType) {
-        this.primaryVolcanoType = primaryVolcanoType;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCountry() {
-        return country;
+    public String getLocation() {
+        return location;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public String getVei() {
-        return vei;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setVei(String vei) {
-        this.vei = vei;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    public String getActivityType() {
-        return activityType;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setActivityType(String activityType) {
-        this.activityType = activityType;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
-    public String getActivityStart() {
-        return activityStart;
+    public int getElevation() {
+        return elevation;
     }
 
-    public void setActivityStart(String activityStart) {
-        this.activityStart = activityStart;
+    public void setElevation(int elevation) {
+        this.elevation = elevation;
     }
 
-    public String getActivityEnd() {
-        return activityEnd;
+    public String getType() {
+        return type;
     }
 
-    public void setActivityEnd(String activityEnd) {
-        this.activityEnd = activityEnd;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<VolcanoActivity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<VolcanoActivity> activities) {
+        this.activities = activities;
     }
 
     @Override
     public String toString() {
         return "VolcanoData{" +
-                "volcanoName='" + volcanoName + '\'' +
-                ", primaryVolcanoType='" + primaryVolcanoType + '\'' +
-                ", country='" + country + '\'' +
-                ", vei='" + vei + '\'' +
-                ", activityType='" + activityType + '\'' +
-                ", activityStart='" + activityStart + '\'' +
-                ", activityEnd='" + activityEnd + '\'' +
+                "number=" + number +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", elevation=" + elevation +
+                ", type='" + type + '\'' +
+                ", activities=" + activities +
                 '}';
     }
-
 }

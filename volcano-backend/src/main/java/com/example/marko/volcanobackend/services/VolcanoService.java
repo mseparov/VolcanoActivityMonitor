@@ -28,9 +28,12 @@ public class VolcanoService {
 
     @PostConstruct
     public void volcanoDataOnStartup() {
-
-        // Get apiUrl from the environment file
+        // Get data from the environment file
         String apiUrl = environment.getProperty("volcano.api.url");
+        String jdbcUrl = environment.getProperty("postgresql.jdbcUrl");
+        String username = environment.getProperty("postgresql.username");
+        String password = environment.getProperty("postgresql.password");
+
         // Fetch the XML data from the API
         String xmlData = fetchDataFromApi(apiUrl);
 
@@ -38,8 +41,11 @@ public class VolcanoService {
         try {
             // Parse the string XML data and return a list of pojo objects representing volcanoes
             List<VolcanoData> volcanoDataList = xmlParser.parseXmlData(xmlData);
+
             // Save the JSON data to the database or perform other operations
-            saveDataToDatabase(volcanoDataList);
+            // Create a PostgresManager instance
+            PostgresManager postgresManager = PostgresManager.getInstance(jdbcUrl, username, password);
+            postgresManager.saveInitialDataToDatabase(volcanoDataList);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,8 +81,5 @@ public class VolcanoService {
         return responseBody;
     }
 
-    private void saveDataToDatabase(List<VolcanoData> jsonData) {
-        // Code to save the JSON data to the database
-        // Implement the logic to store the data in the PostgreSQL database using an ORM like Hibernate or Spring Data JPA
-    }
+
 }

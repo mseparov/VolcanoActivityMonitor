@@ -9,3 +9,6 @@
 # Java
 /volcano-backend/.mvn/
 /volcano-backend/target/
+
+# DB
+/data/

@@ -14,12 +14,10 @@ export class VolcanoPopupComponent {
 
   constructor(private volcanoService: VolcanoService) {}
 
-  addVolcanoActivity(event: Event) {
-    event.preventDefault(); // Prevent the default form submission behavior
-
+  addVolcanoActivity(newActivity: any) {
     this.isAddingActivity = true; // Set the flag to indicate activity addition is in progress
-
-    this.volcanoService.addVolcanoActivity(this.newActivity)
+    console.log(newActivity)
+    this.volcanoService.addVolcanoActivity(newActivity)
       .pipe(finalize(() => this.isAddingActivity = false)) // Set the flag back to false on completion or error
       .subscribe({
         next: (response) => {

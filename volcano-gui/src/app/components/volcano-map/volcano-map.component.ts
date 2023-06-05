@@ -98,6 +98,7 @@ export class VolcanoMapComponent implements OnInit {
     this.volcanoService.getVolcanoData().subscribe({
       next: (data) => {
         this.displayVolcanos(data);
+        console.log(data);
       },
       error: (error) => {
         console.log("Couldn't get volcano data...", error);

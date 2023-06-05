@@ -37,48 +37,6 @@ export const mockVolcanoData = [
             type: "Type 2",
             start: '2022-02-06',
             end: '2022-07-02',
-        },
-        {
-            VEI: 7,
-            type: "Type 2",
-            start: '2022-02-06',
-            end: '2022-07-02',
-        },
-        {
-            VEI: 7,
-            type: "Type 2",
-            start: '2022-02-06',
-            end: '2022-07-02',
-        },
-        {
-            VEI: 7,
-            type: "Type 2",
-            start: '2022-02-06',
-            end: '2022-07-02',
-        },
-        {
-            VEI: 7,
-            type: "Type 2",
-            start: '2022-02-06',
-            end: '2022-07-02',
-        },
-        {
-            VEI: 7,
-            type: "Type 2",
-            start: '2022-02-06',
-            end: '2022-07-02',
-        },
-        {
-            VEI: 7,
-            type: "Type 2",
-            start: '2022-02-06',
-            end: '2022-07-02',
-        },
-        {
-            VEI: 7,
-            type: "Type 2",
-            start: '2022-02-06',
-            end: '2022-07-02',
         }
       ]
     },

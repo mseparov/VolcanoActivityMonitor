@@ -5,12 +5,13 @@
     <div class="volcanoInfo">
       <h2 style="background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">{{ volcano.name }}</h2>
       <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Location: {{ volcano.location }}</p>
-      <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Type: {{ volcano.type }}</p>  
+      <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Elevation: {{ volcano.elevation }}</p>  
+      <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Type: {{ volcano.type }}</p>
     </div>
 
     <div style="width: 100%;">
       <h3>Add Volcano Activity</h3>
-      <form (submit)="addVolcanoActivity($event)">
+      <form>
         <div class="form-group">
           <label>Activity Name</label>
           <input type="text" [(ngModel)]="newActivity.name" [ngModelOptions]="{ standalone: true }" required>
@@ -27,10 +28,10 @@
           <label>Activity End</label>
           <input type="date" [(ngModel)]="newActivity.end" [ngModelOptions]="{ standalone: true }" required>
         </div>
-        <button class="submitButton" type="submit">Register Activity</button>
+        <button class="submitButton" type="button" (click)="addVolcanoActivity(newActivity)">Register Activity</button>
       </form>
     </div>
-
+    
   </div>
 
   <div style="margin-left: 55px; background-color: rgb(216, 229, 235); width: 60%; border-radius: 5px;">
