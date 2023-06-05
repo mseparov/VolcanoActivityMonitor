@@ -1,4 +1,4 @@
-FROM adoptopenjdk:11-jdk-hotspot as builder
+FROM openjdk:18 as builder
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ COPY src src
 RUN chmod +x mvnw
 RUN ./mvnw package -DskipTests
 
-FROM adoptopenjdk:11-jre-hotspot
+FROM openjdk:18
 
 WORKDIR /app
 
