@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="createVolcanoActivityType" author="Marko">
+        <sql>
+            <![CDATA[
+            CREATE TYPE volcano_activity AS (
+              VEI INT,
+              type VARCHAR(255),
+              start_date DATE,
+              end_date DATE
+            );
+            ]]>
+        </sql>
+    </changeSet>
+
+    <changeSet id="createVolcanoesTable" author="Marko">
+        <createTable tableName="volcanoes">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number" type="INT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="location" type="VARCHAR(255)"/>
+            <column name="elevation" type="INT"/>
+            <column name="latitude" type="DOUBLE"/>
+            <column name="longitude" type="DOUBLE"/>
+            <column name="activities" type="volcano_activity[]" />
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

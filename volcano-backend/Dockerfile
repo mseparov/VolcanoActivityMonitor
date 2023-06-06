@@ -14,8 +14,8 @@ FROM openjdk:18
 
 WORKDIR /app
 
-COPY --from=builder /app/target/volcano-backend.jar .
+COPY --from=builder /app/target/*.jar .
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "volcano-backend.jar"]
+CMD ["java", "-jar", "volcano-backend-0.0.1-SNAPSHOT.jar"]

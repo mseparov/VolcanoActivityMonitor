@@ -11,28 +11,49 @@ services:
       - 5432:5432
     volumes:
       - ./data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-
+    healthcheck:
+      test: pg_isready -U postgres
+    networks:
+      - volcanoes
+      
   backend:
     build:
       context: ./volcano-backend
       dockerfile: Dockerfile
+      args:
+        - "--no-cache"
     restart: always
     ports:
       - 8080:8080
-    depends_on:
-      - db
+    depends_on: 
+      db:
+        condition: service_healthy
     environment:
+      - volcano.api.url=https://webservices.volcano.si.edu/geoserver/GVP-VOTW/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GVP-VOTW:Smithsonian_VOTW_Holocene_Volcanoes&maxFeatures=100
       - postgresql.jdbcUrl=jdbc:postgresql://db:5432/volcanoes
       - postgresql.username=postgres
       - postgresql.password=mysecretpassword
+      - spring.liquibase.enabled=true
+      - spring.liquibase.change-log=classpath:db/changelog/db.changelog.xml
+      - spring.datasource.url=jdbc:postgresql://db:5432/volcanoes
+      - spring.datasource.username=postgres
+      - spring.datasource.password=mysecretpassword
+    networks:
+      - volcanoes
 
-#  frontend:
-#    build:
-#      context: ./volcano-gui
-#      dockerfile: Dockerfile
-#    restart: always
-#    ports:
-#      - 80:80
-#    depends_on:
-#      - backend
+  frontend:
+    build:
+      context: ./volcano-gui
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 4200:80
+    depends_on:
+      - backend
+    environment:
+      - apiVolcanoData=http://backend:8080/volcanoes
+    networks:
+      - volcanoes
+      
+networks:
+  volcanoes:
