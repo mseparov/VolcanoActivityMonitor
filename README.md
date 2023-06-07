@@ -4,7 +4,7 @@ Fullstack project for an assignment.
 # Frontend
 Using Angular for the GUI.
 Using Leaflet as the library for the Volcano map.
-Using ComponentFactoryResolver and Injector to inject component into leaflet popup.
+Using observables for dynamic content.
 # Backend
 Using Java SpringBoot for the backend.
 Decided to use the java.net.http.HttpRequest libarary instead of RestTemplate because of MimeType issue.

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {BehaviorSubject, Observable, publishLast, refCount, share} from 'rxjs';
 import { environment } from '@env/environment';
+import {Volcano} from "../models/volcano";
+import {Activity} from "../models/activity";
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +13,9 @@ export class VolcanoService {
 
   constructor(private http: HttpClient) { }
 
-  getVolcanoData(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+  getVolcanoData(): Observable<Volcano[]> {
+    return this.http.get<Volcano[]>(`${this.apiUrl}/volcanoes`).pipe(share({
+      resetOnError: false, resetOnComplete: false, resetOnRefCountZero: false }));
   }
 
-  addVolcanoActivity(activity: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/activities`, activity);
-  }
-
-  getVolcanoActivities(volcanoId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/activities/${volcanoId}`);
-  }
 }

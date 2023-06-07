@@ -12,3 +12,18 @@
 ::ng-deep .leaflet-popup-tip {
     background-color: rgb(240, 245, 250);
 }
+
+.submitButton {
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+  background-color: #4c6ef5;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}

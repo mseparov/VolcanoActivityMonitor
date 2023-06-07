@@ -1,20 +1,18 @@
-<div style="display: flex;">
-
-  <div>
-    
+<div style="display: flex; background: white; height: 100%; border-radius: 6px; width: 120%; animation: fadeIn 0.4s ease-in-out forwards;">
+  <div style="margin-left: 12px;">
     <div class="volcanoInfo">
-      <h2 style="background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">{{ volcano.name }}</h2>
-      <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Location: {{ volcano.location }}</p>
-      <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Elevation: {{ volcano.elevation }}</p>  
-      <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Type: {{ volcano.type }}</p>
+      <h2 style="background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">{{ (volcano$ | async)?.name }}</h2>
+      <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Location: {{ (volcano$ | async)?.location }}</p>
+      <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Elevation: {{ (volcano$ | async)?.elevation }}</p>
+      <p style="font-size: medium; background-color: rgb(216, 229, 235); border-radius: 5px; padding: 3px;">Type: {{ (volcano$ | async)?.type }}</p>
     </div>
 
     <div style="width: 100%;">
       <h3>Add Volcano Activity</h3>
       <form>
         <div class="form-group">
-          <label>Activity Name</label>
-          <input type="text" [(ngModel)]="newActivity.name" [ngModelOptions]="{ standalone: true }" required>
+          <label>Activity Type</label>
+          <input type="text" [(ngModel)]="newActivity.type" [ngModelOptions]="{ standalone: true }" required>
         </div>
         <div class="form-group">
           <label>VEI</label>
@@ -31,27 +29,30 @@
         <button class="submitButton" type="button" (click)="addVolcanoActivity(newActivity)">Register Activity</button>
       </form>
     </div>
-    
+
   </div>
 
   <div style="margin-left: 55px; background-color: rgb(216, 229, 235); width: 60%; border-radius: 5px;">
     <div>
       <h3 style="text-align: center;">All Volcano Activities</h3>
-      <div style="height: 440px; width: 100%; overflow-y: scroll; margin-left: 5px;">
-        <ul>
-          <li *ngFor="let activity of volcano.activities">
-            <b>Name: </b>{{ activity.name }}, 
+      <div style="width: 100%; overflow-y: scroll; margin-left: -5px; height: 530px;">
+        <ul style="margin-left: 10px;">
+          <li *ngFor="let activity of (volcano$ | async)!.activities.slice().reverse()">
+            <div style="position: relative;">
+              <button style="position: absolute; top: 5px; right: 5px;" (click)="deleteVolcanoActivity(activity)" class="deleteButton">Delete</button>
+            </div>
+            <b>Type: </b>{{ activity.type }},
             <br>
-            <b>VEI: </b>{{ activity.VEI }},
+            <b>VEI: </b>{{ activity.vei }},
             <br>
-            <b>Start: </b>{{ activity.start }}, 
+            <b>Start: </b>{{ activity.start }},
             <br>
             <b>End: </b>{{ activity.end }}
           </li>
         </ul>
       </div>
     </div>
-   
+
   </div>
 
 </div>

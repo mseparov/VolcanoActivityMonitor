@@ -1,3 +1,11 @@
-<div ng-controller="mapController">
-    <div id="map" class="map-container"></div>
+<div style="width: 100%">
+    <div style="width: 100%; float: left" >
+      <div ng-controller="mapController">
+        <div id="map" class="map-container" style="width: 100%"></div>
+      </div>
+    </div>
+  <div style="float: left; position:fixed; bottom: 18px; left: 8px; z-index: 100000" *ngIf="(volcano$ | async)?.number !== undefined">
+    <app-volcano-popup></app-volcano-popup>
+  </div>
+  <div style="clear: both"></div>
 </div>

@@ -1,6 +1,7 @@
 export const mockVolcanoData = [
     {
       id: 1,
+      number: 2,
       name: 'Volcano 1',
       location: 'Location 1',
       latitude: 23.456,
@@ -8,6 +9,18 @@ export const mockVolcanoData = [
       elevation: 1000,
       type: 'Stratovolcano',
       activities: [
+        {
+            VEI: 5,
+            name: "Type 1",
+            start: '2022-01-01',
+            end: '2022-02-02',
+        },
+        {
+            VEI: 5,
+            name: "Type 1",
+            start: '2022-01-01',
+            end: '2022-02-02',
+        },
         {
             VEI: 5,
             name: "Type 1",
@@ -42,6 +55,7 @@ export const mockVolcanoData = [
     },
     {
       id: 2,
+      number: 3,
       name: 'Volcano 2',
       location: 'Location 2',
       latitude: 78.912,

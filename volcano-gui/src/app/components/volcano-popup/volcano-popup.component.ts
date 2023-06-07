@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { VolcanoService } from 'src/app/services/volcano.service';
 import { finalize } from 'rxjs/operators';
+import {VolcanoStore} from "../../stores/volcano.store";
+import {BehaviorSubject, Observable} from "rxjs";
+import {Volcano} from "../../models/volcano";
+import {Activity} from "../../models/activity";
 
 @Component({
   selector: 'app-volcano-popup',
@@ -8,42 +11,34 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./volcano-popup.component.css']
 })
 export class VolcanoPopupComponent {
-  @Input() volcano: any;
+  volcano$: Observable<Volcano | undefined>; // Update the type to include undefined
   newActivity: any = {}; // Object to store the new activity data
-  isAddingActivity = false; // Flag to indicate if an activity is being added
 
-  constructor(private volcanoService: VolcanoService) {}
-
-  addVolcanoActivity(newActivity: any) {
-    this.isAddingActivity = true; // Set the flag to indicate activity addition is in progress
-    console.log(newActivity)
-    this.volcanoService.addVolcanoActivity(newActivity)
-      .pipe(finalize(() => this.isAddingActivity = false)) // Set the flag back to false on completion or error
-      .subscribe({
-        next: (response) => {
-          // Activity added successfully, update the local data
-          this.volcano.activities.push(response);
-          this.newActivity = {}; // Clear the form inputs
-        },
-        error: (error) => {
-          // Handle the error, e.g., display an error message
-          console.log('Error adding volcano activity:', error);
-        }
-      });
+  constructor(private volcanoStore: VolcanoStore) {
+    this.volcano$ = this.volcanoStore.volcano$;
   }
 
-  getVolcanoActivities() {
-    this.volcanoService.getVolcanoActivities(this.volcano.id)
-      .subscribe({
-        next: (response) => {
-          // Activities retrieved successfully, update the local data
-          this.volcano.activities = response;
-        },
-        error: (error) => {
-          // Handle the error, e.g., display an error message
-          console.log('Error retrieving volcano activities:', error);
-        }
-      });
+  addVolcanoActivity(newActivity: Activity) {
+    if (this.volcanoStore.validateActivityData(newActivity)) {
+      newActivity.volcanoId = this.volcanoStore.getSingleVolcano()?.number;
+      console.log(newActivity);
+      this.volcanoStore.pushVolcanoActivity(newActivity);
+      // Reset the form fields
+      this.newActivity = {};
+    } else {
+      console.log(newActivity);
+      // Handle validation error, e.g., display an error message to the user
+      console.error('Invalid activity data');
+    }
   }
 
+  deleteVolcanoActivity(activity: Activity) {
+    activity.volcanoId = this.volcanoStore.getSingleVolcano()?.number;
+    if (activity.volcanoId) {
+      console.log(activity, activity.volcanoId)
+      this.volcanoStore.deleteVolcanoActivity(activity.volcanoId, activity.activityId);
+    } else {
+      console.log('Invalid volcano ID');
+    }
+  }
 }

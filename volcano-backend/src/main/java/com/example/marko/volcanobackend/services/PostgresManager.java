@@ -2,6 +2,8 @@ package com.example.marko.volcanobackend.services;
 
 import com.example.marko.volcanobackend.models.VolcanoActivity;
 import com.example.marko.volcanobackend.models.VolcanoData;
+import org.postgresql.jdbc.PgArray;
+import org.postgresql.util.PGobject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -101,15 +103,27 @@ public class PostgresManager {
             Array activitiesArray = resultSet.getArray("activities");
 
             if (activitiesArray != null) {
-                Object[] activities = (Object[]) activitiesArray.getArray();
-                for (Object activity : activities) {
-                    Object[] activityData = (Object[]) activity;
-                    VolcanoActivity volcanoActivity = new VolcanoActivity();
-                    volcanoActivity.setVEI((int) activityData[0]);
-                    volcanoActivity.setType((String) activityData[1]);
-                    volcanoActivity.setStart(activityData[2].toString());
-                    volcanoActivity.setEnd(activityData[3].toString());
-                    volcanoData.getActivities().add(volcanoActivity);
+                Object[] activityObjects = (Object[]) activitiesArray.getArray();
+
+                for (Object activityObject : activityObjects) {
+                    if (activityObject instanceof PGobject pgObject) {
+                        String activityDataString = pgObject.getValue();
+
+                        if (activityDataString != null) {
+                            String[] activityFields = activityDataString.substring(1, activityDataString.length() - 1).split(",");
+
+                            if (activityFields.length == 5) {
+                                VolcanoActivity volcanoActivity = new VolcanoActivity();
+                                volcanoActivity.setActivityId(Integer.parseInt(activityFields[0]));
+                                volcanoActivity.setVEI(Integer.parseInt(activityFields[1]));
+                                String activityType = activityFields[2].replaceAll("[\"']", "");
+                                volcanoActivity.setType(activityType);
+                                volcanoActivity.setStart(activityFields[3]);
+                                volcanoActivity.setEnd(activityFields[4]);
+                                volcanoData.getActivities().add(volcanoActivity);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -119,6 +133,76 @@ public class PostgresManager {
         statement.close();
 
         return volcanoDataList;
+    }
+
+
+    public void saveActivityData(VolcanoActivity volcanoActivity, int volcanoId) {
+        try {
+            String sql = "UPDATE volcanoes SET activities = array_append(activities, CAST(? AS volcano_activity)) WHERE number = ?";
+            PreparedStatement statement = this.connection.prepareStatement(sql);
+
+            // Manually construct the activity data string in the desired format
+            String activityData = "(" +
+                    volcanoActivity.getActivityId() + "," +
+                    volcanoActivity.getVEI() + "," +
+                    "'" + volcanoActivity.getType() + "'," +
+                    "'" + volcanoActivity.getStart() + "'," +
+                    "'" + volcanoActivity.getEnd() + "'" +
+                    ")";
+
+            // Set the parameters in the prepared statement
+            statement.setString(1, activityData);
+            statement.setInt(2, volcanoId);
+
+            // Execute the update
+            statement.executeUpdate();
+
+            // Close the statement
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteActivity(int volcanoId, int activityId) {
+        try {
+            // First, retrieve the current activities of the volcano
+            String selectSql = "SELECT activities FROM volcanoes WHERE number = ?";
+            PreparedStatement selectStatement = this.connection.prepareStatement(selectSql);
+            selectStatement.setInt(1, volcanoId);
+            ResultSet resultSet = selectStatement.executeQuery();
+            resultSet.next();
+            Array activitiesArray = resultSet.getArray(1);
+            Object[] currentActivities = (Object[]) activitiesArray.getArray();
+
+            // Remove the activity with the specified ID from the activities array
+            List<Object> updatedActivities = new ArrayList<>();
+            for (Object activity : currentActivities) {
+                if (activity instanceof PGobject pgObject) {
+                    String activityDataString = pgObject.getValue();
+                    if (activityDataString != null) {
+                        String[] activityFields = activityDataString.substring(1, activityDataString.length() - 1).split(",");
+                        int currentActivityId = Integer.parseInt(activityFields[0].trim());
+                        if (currentActivityId != activityId) {
+                            updatedActivities.add(activity);
+                        }
+                    }
+                }
+            }
+
+            // Update the activities array in the database
+            String updateSql = "UPDATE volcanoes SET activities = ? WHERE number = ?";
+            PreparedStatement updateStatement = this.connection.prepareStatement(updateSql);
+            updateStatement.setArray(1, this.connection.createArrayOf("volcano_activity", updatedActivities.toArray()));
+            updateStatement.setInt(2, volcanoId);
+            updateStatement.executeUpdate();
+
+            // Close the statements
+            selectStatement.close();
+            updateStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void closeConnection() throws SQLException {

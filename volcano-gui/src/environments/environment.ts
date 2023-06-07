@@ -9,7 +9,7 @@ export const environment = {
   mapInitialLongitude: -6.00,
   mapInitialZoom: 3,
 
-  apiVolcanoData: "http://localhost:8080/volcanoes",
+  apiVolcanoData: "http://localhost:8080",
 };
 
 /*

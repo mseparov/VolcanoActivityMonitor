@@ -51,7 +51,7 @@ services:
     depends_on:
       - backend
     environment:
-      - apiVolcanoData=http://backend:8080/volcanoes
+      - apiVolcanoData=http://backend:8080
     networks:
       - volcanoes
       

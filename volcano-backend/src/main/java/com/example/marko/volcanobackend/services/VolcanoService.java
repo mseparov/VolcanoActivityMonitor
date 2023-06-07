@@ -2,7 +2,6 @@ package com.example.marko.volcanobackend.services;
 
 import com.example.marko.volcanobackend.models.VolcanoData;
 import com.example.marko.volcanobackend.parser.XmlParser;
-import com.example.marko.volcanobackend.services.PostgresManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEventPublisher;
@@ -10,7 +9,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.logging.Logger;
 import java.io.IOException;

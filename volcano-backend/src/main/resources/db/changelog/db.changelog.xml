@@ -8,6 +8,7 @@
         <sql>
             <![CDATA[
             CREATE TYPE volcano_activity AS (
+              activity_id INT,
               VEI INT,
               type VARCHAR(255),
               start_date DATE,

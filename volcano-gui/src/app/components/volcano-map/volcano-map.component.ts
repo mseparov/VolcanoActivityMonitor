@@ -1,9 +1,9 @@
 import { Component, OnInit, ComponentFactoryResolver, Injector } from '@angular/core';
 import * as L from 'leaflet';
 import { environment } from '@env/environment';
-import { mockVolcanoData } from '@env/mock-data';
-import { VolcanoService } from 'src/app/services/volcano.service';
-import { VolcanoPopupComponent } from 'src/app/components/volcano-popup/volcano-popup.component';
+import {VolcanoStore} from "../../stores/volcano.store";
+import {Volcano} from "../../models/volcano";
+import {BehaviorSubject, Observable} from "rxjs";
 
 /**
  * Component responsible for displaying a map with volcano markers.
@@ -17,8 +17,8 @@ export class VolcanoMapComponent implements OnInit {
 
   map!: L.Map;
   
-  // Mock data
-  volcanoes = mockVolcanoData;
+  // Current Volcano
+  volcano$!:Observable<Volcano>;
 
   markerIcon:L.Icon = L.icon({
     iconUrl: '../../assets/volcanoIcon.png', // Replace with the actual path to your marker icon
@@ -41,10 +41,10 @@ export class VolcanoMapComponent implements OnInit {
    * @param injector The injector for dynamic component creation.
    */
   constructor(
-    private volcanoService: VolcanoService,
-    private resolver: ComponentFactoryResolver,
-    private injector: Injector
-  ) { }
+    private volcanoStore: VolcanoStore,
+  ) { 
+    this.volcano$ = this.volcanoStore.volcano$;
+  }
 
   /**
    * Initializes the component.
@@ -95,16 +95,13 @@ export class VolcanoMapComponent implements OnInit {
    * Loads the volcano data from the service and calls displayVolcanos(data) function.
    */
   private loadVolcanoData() {
-    this.volcanoService.getVolcanoData().subscribe({
+    this.volcanoStore.volcanoes$.subscribe({
       next: (data) => {
         this.displayVolcanos(data);
         console.log(data);
-      },
-      error: (error) => {
-        console.log("Couldn't get volcano data...", error);
-        this.displayVolcanos(mockVolcanoData)
       }
     });
+    this.volcanoStore.getVolcanoData();
   }
 
   /**
@@ -112,34 +109,69 @@ export class VolcanoMapComponent implements OnInit {
    * @param data The volcano data to be displayed.
    */
   private displayVolcanos(data: any) {
+    const _this = this;
     data.forEach((volcano: any) => {
+      let popup = `
+      <div>
+        <table style="width: 100%">
+          <tr>
+            <th style="text-align: center;">Name</th>
+            <td style="text-align: center;">${volcano.name}</td>
+          </tr>
+          <tr>
+            <th style="text-align: center;">Location</th>
+            <td style="text-align: center;">${volcano.location}</td>
+          </tr>
+          <tr>
+            <th style="text-align: center;">Elevation</th>
+            <td style="text-align: center;">${volcano.elevation}</td>
+          </tr>
+          <tr>
+            <th style="text-align: center;">Type</th>
+            <td style="text-align: center;">${volcano.type}</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="text-align: center;">
+              <button style="display: inline-block; padding: 8px 16px; font-size: 14px;
+              font-weight: 400; text-align: center; text-decoration: none; background-color: #4c6ef5;
+              color: #ffffff; border: none; border-radius: 8px; cursor: pointer;
+              transition: background-color 0.3s ease;" class="activities submitButton">
+              Activities</button>
+            </td>
+          </tr>
+        </table>
+    </div>
+    `
       const latitude = volcano.latitude;
       const longitude = volcano.longitude;
       const name = volcano.name;
 
       const marker = L.marker([latitude, longitude], { icon: this.markerIcon }).addTo(this.map);
 
-      // Create an instance of VolcanoPopupComponent and pass the volcano data
-      const componentFactory = this.resolver.resolveComponentFactory(VolcanoPopupComponent);
-      const component = componentFactory.create(this.injector);
-      component.instance.volcano = volcano;
-      component.changeDetectorRef.detectChanges();
-
-      // Get the HTML content of the component
-      const content = component.location.nativeElement.innerHTML;
-
       // Set the content of the popup
-      marker.bindPopup(content, { minWidth: 450 });
+      marker.bindPopup(popup, { minWidth: 100 });
 
-      marker.on('popupopen', () => {
+      marker.on('popupopen', (a) => {
         marker.setIcon(this.defaultIcon);
+        a.target.getPopup().getElement()
+          .querySelector(".activities")
+          .addEventListener("click", () => {
+            _this.displayPopupData(volcano);
+          })
+
       });
 
       marker.on('popupclose', () => {
         marker.setIcon(this.markerIcon);
+        this.volcanoStore.clearSingleVolcano();
       });
-      
+
 
     });
   }
+
+  displayPopupData(volcano: Volcano) {
+    this.volcanoStore.pushSingleVolcano(volcano);
+  }
+
 }
