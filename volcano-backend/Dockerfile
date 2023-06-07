@@ -8,6 +8,10 @@ COPY pom.xml .
 COPY src src
 
 RUN chmod +x mvnw
+
+# Add the sed command to remove carriage return characters from mvnw script
+RUN sed -i 's/\r$//' mvnw
+
 RUN ./mvnw package -DskipTests
 
 FROM openjdk:18
